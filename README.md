@@ -8,12 +8,12 @@ Simple CRUD blogging app built using golang and grpc
 
 ```
   grpcurl -plaintext -d '{
-  "title": "My First Blog Post",
-  "content": "This is the content of my first blog post.",
-  "author": "John Doe",
-  "publicationdate": "2024-03-03T00:00:00Z",
-  "tags": ["grpc", "protobuf"]
-}' localhost:50051 bloggingapi.bloggingapi.CreateBlog
+    "title": "My First Blog Post",
+    "content": "This is the content of my first blog post.",
+    "author": "John Doe",
+    "publicationdate": "2024-03-03T00:00:00Z",
+    "tags": ["grpc", "protobuf"]
+  }' localhost:50051 bloggingapi.bloggingapi.CreateBlog
 ```
 
 
@@ -23,7 +23,22 @@ Simple CRUD blogging app built using golang and grpc
 grpcurl -plaintext -format text -d 'postid: <postID>' localhost:50051 bloggingapi.bloggingapi.ReadBlog
 ```
 
-3. You can delete a blog post using the following command:
+3. You can Update a blog post using the following command:
+
+```
+grpcurl -plaintext -d '{
+  "postID": "<post_id>",
+  "post": {
+    "title": "My First Blog Post updated",
+    "content": "This is the content of my first blog post.",
+    "author": "John Doe",
+    "publicationdate": "2024-03-03T00:00:00Z",
+    "tags": ["grpc", "protobuf"]
+  }
+}' localhost:50051 bloggingapi.bloggingapi.UpdateBlog
+```
+
+4. You can delete a blog post using the following command:
 
 ```
 grpcurl -plaintext -format text -d 'postid: <postID>' localhost:50051 bloggingapi.bloggingapi.DeleteBlog

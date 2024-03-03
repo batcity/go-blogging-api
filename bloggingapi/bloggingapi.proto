@@ -7,12 +7,12 @@ option go_package = "go.blogging.api/bloggingapi";
 
 package bloggingapi;
 
-// The greeting service definition.
+// The Blogging API's definition.
 service bloggingapi {
   rpc CreateBlog (BlogPost) returns (BlogPostWithUid){}
-  rpc ReadBlog (BlogRequest) returns (BlogPostWithUid) {}
-  rpc UpdateBlog(BlogPostWithUid) returns (BlogPost);
-	rpc DeleteBlog(BlogRequest) returns (google.protobuf.StringValue);
+  rpc ReadBlog (BlogPostID) returns (BlogPostWithUid) {}
+  rpc UpdateBlog(BlogPostWithUid) returns (BlogPostWithUid);
+	rpc DeleteBlog(BlogPostID) returns (google.protobuf.StringValue);
 }
 
 message BlogPostWithUid {
@@ -30,6 +30,6 @@ message BlogPost {
 }
 
 // The message containing the requested blog's ID
-message BlogRequest {
+message BlogPostID {
   uint64 postid = 1;
 }

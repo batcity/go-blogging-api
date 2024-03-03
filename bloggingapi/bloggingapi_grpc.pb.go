@@ -31,9 +31,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BloggingapiClient interface {
 	CreateBlog(ctx context.Context, in *BlogPost, opts ...grpc.CallOption) (*BlogPostWithUid, error)
-	ReadBlog(ctx context.Context, in *BlogRequest, opts ...grpc.CallOption) (*BlogPostWithUid, error)
-	UpdateBlog(ctx context.Context, in *BlogPostWithUid, opts ...grpc.CallOption) (*BlogPost, error)
-	DeleteBlog(ctx context.Context, in *BlogRequest, opts ...grpc.CallOption) (*wrapperspb.StringValue, error)
+	ReadBlog(ctx context.Context, in *BlogPostID, opts ...grpc.CallOption) (*BlogPostWithUid, error)
+	UpdateBlog(ctx context.Context, in *BlogPostWithUid, opts ...grpc.CallOption) (*BlogPostWithUid, error)
+	DeleteBlog(ctx context.Context, in *BlogPostID, opts ...grpc.CallOption) (*wrapperspb.StringValue, error)
 }
 
 type bloggingapiClient struct {
@@ -53,7 +53,7 @@ func (c *bloggingapiClient) CreateBlog(ctx context.Context, in *BlogPost, opts .
 	return out, nil
 }
 
-func (c *bloggingapiClient) ReadBlog(ctx context.Context, in *BlogRequest, opts ...grpc.CallOption) (*BlogPostWithUid, error) {
+func (c *bloggingapiClient) ReadBlog(ctx context.Context, in *BlogPostID, opts ...grpc.CallOption) (*BlogPostWithUid, error) {
 	out := new(BlogPostWithUid)
 	err := c.cc.Invoke(ctx, Bloggingapi_ReadBlog_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -62,8 +62,8 @@ func (c *bloggingapiClient) ReadBlog(ctx context.Context, in *BlogRequest, opts 
 	return out, nil
 }
 
-func (c *bloggingapiClient) UpdateBlog(ctx context.Context, in *BlogPostWithUid, opts ...grpc.CallOption) (*BlogPost, error) {
-	out := new(BlogPost)
+func (c *bloggingapiClient) UpdateBlog(ctx context.Context, in *BlogPostWithUid, opts ...grpc.CallOption) (*BlogPostWithUid, error) {
+	out := new(BlogPostWithUid)
 	err := c.cc.Invoke(ctx, Bloggingapi_UpdateBlog_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -71,7 +71,7 @@ func (c *bloggingapiClient) UpdateBlog(ctx context.Context, in *BlogPostWithUid,
 	return out, nil
 }
 
-func (c *bloggingapiClient) DeleteBlog(ctx context.Context, in *BlogRequest, opts ...grpc.CallOption) (*wrapperspb.StringValue, error) {
+func (c *bloggingapiClient) DeleteBlog(ctx context.Context, in *BlogPostID, opts ...grpc.CallOption) (*wrapperspb.StringValue, error) {
 	out := new(wrapperspb.StringValue)
 	err := c.cc.Invoke(ctx, Bloggingapi_DeleteBlog_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -85,9 +85,9 @@ func (c *bloggingapiClient) DeleteBlog(ctx context.Context, in *BlogRequest, opt
 // for forward compatibility
 type BloggingapiServer interface {
 	CreateBlog(context.Context, *BlogPost) (*BlogPostWithUid, error)
-	ReadBlog(context.Context, *BlogRequest) (*BlogPostWithUid, error)
-	UpdateBlog(context.Context, *BlogPostWithUid) (*BlogPost, error)
-	DeleteBlog(context.Context, *BlogRequest) (*wrapperspb.StringValue, error)
+	ReadBlog(context.Context, *BlogPostID) (*BlogPostWithUid, error)
+	UpdateBlog(context.Context, *BlogPostWithUid) (*BlogPostWithUid, error)
+	DeleteBlog(context.Context, *BlogPostID) (*wrapperspb.StringValue, error)
 	mustEmbedUnimplementedBloggingapiServer()
 }
 
@@ -98,13 +98,13 @@ type UnimplementedBloggingapiServer struct {
 func (UnimplementedBloggingapiServer) CreateBlog(context.Context, *BlogPost) (*BlogPostWithUid, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBlog not implemented")
 }
-func (UnimplementedBloggingapiServer) ReadBlog(context.Context, *BlogRequest) (*BlogPostWithUid, error) {
+func (UnimplementedBloggingapiServer) ReadBlog(context.Context, *BlogPostID) (*BlogPostWithUid, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadBlog not implemented")
 }
-func (UnimplementedBloggingapiServer) UpdateBlog(context.Context, *BlogPostWithUid) (*BlogPost, error) {
+func (UnimplementedBloggingapiServer) UpdateBlog(context.Context, *BlogPostWithUid) (*BlogPostWithUid, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBlog not implemented")
 }
-func (UnimplementedBloggingapiServer) DeleteBlog(context.Context, *BlogRequest) (*wrapperspb.StringValue, error) {
+func (UnimplementedBloggingapiServer) DeleteBlog(context.Context, *BlogPostID) (*wrapperspb.StringValue, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBlog not implemented")
 }
 func (UnimplementedBloggingapiServer) mustEmbedUnimplementedBloggingapiServer() {}
@@ -139,7 +139,7 @@ func _Bloggingapi_CreateBlog_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _Bloggingapi_ReadBlog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BlogRequest)
+	in := new(BlogPostID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -151,7 +151,7 @@ func _Bloggingapi_ReadBlog_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: Bloggingapi_ReadBlog_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BloggingapiServer).ReadBlog(ctx, req.(*BlogRequest))
+		return srv.(BloggingapiServer).ReadBlog(ctx, req.(*BlogPostID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -175,7 +175,7 @@ func _Bloggingapi_UpdateBlog_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _Bloggingapi_DeleteBlog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BlogRequest)
+	in := new(BlogPostID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -187,7 +187,7 @@ func _Bloggingapi_DeleteBlog_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: Bloggingapi_DeleteBlog_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BloggingapiServer).DeleteBlog(ctx, req.(*BlogRequest))
+		return srv.(BloggingapiServer).DeleteBlog(ctx, req.(*BlogPostID))
 	}
 	return interceptor(ctx, in, info, handler)
 }

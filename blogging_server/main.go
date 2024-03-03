@@ -5,6 +5,8 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
 	"net"
 
@@ -26,35 +28,49 @@ type server struct {
 }
 
 func (s *server) CreateBlog(ctx context.Context, blogPost *bloggingapi.BlogPost) (*bloggingapi.BlogPostWithUid, error) {
+	// change this to base long and set it to autoincrement
 	blogPostId := rand.Uint64()
+	///////////////////////////////////////////////////////
 	log.Printf("Created Blog post: %v", blogPostId)
 	globalStore[blogPostId] = blogPost
 	return &bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: blogPost}, nil
 }
 
-func (s *server) ReadBlog(ctx context.Context, in *bloggingapi.BlogRequest) (*bloggingapi.BlogPostWithUid, error) {
+// modify this to pass in uint32 instead of a BlogPostID
+func (s *server) ReadBlog(ctx context.Context, in *bloggingapi.BlogPostID) (*bloggingapi.BlogPostWithUid, error) {
 	blogPostId := in.GetPostid()
 	log.Printf("Reading Blog post: %v", blogPostId)
 	blogPost := globalStore[blogPostId]
 	return &bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: blogPost}, nil
 }
 
-func (s *server) DeleteBlog(ctx context.Context, in *bloggingapi.BlogRequest) (*wrappers.StringValue, error) {
+func (s *server) UpdateBlog(ctx context.Context, in *bloggingapi.BlogPostWithUid) (*bloggingapi.BlogPostWithUid, error) {
+	blogPostId := in.GetPostID()
+	_, exists := globalStore[blogPostId]
+
+	if exists {
+		log.Printf("Updating Blog post: %v", blogPostId)
+		globalStore[blogPostId] = in.GetPost()
+		return &bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: globalStore[blogPostId]}, nil
+	}
+
+	return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s %d %s", "Blog post", blogPostId, "does not exist"))
+}
+
+func (s *server) DeleteBlog(ctx context.Context, in *bloggingapi.BlogPostID) (*wrappers.StringValue, error) {
 	blogPostId := in.GetPostid()
 	_, exists := globalStore[blogPostId]
 
 	if exists {
+		log.Printf("Deleting Blog post: %v", blogPostId)
 		delete(globalStore, blogPostId)
 		response := &wrappers.StringValue{
-			Value: fmt.Sprintf("%s %d %s", "Blog post ", blogPostId, " deleted successfully"),
+			Value: fmt.Sprintf("%s %d %s", "Blog post", blogPostId, "deleted successfully"),
 		}
 		return response, nil
 	}
 
-	failResponse := &wrappers.StringValue{
-		Value: fmt.Sprintf("%s %d %s", "Blog post ", blogPostId, " does not exist"),
-	}
-	return failResponse, nil
+	return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s %d %s", "Blog post", blogPostId, "does not exist"))
 }
 
 func main() {
