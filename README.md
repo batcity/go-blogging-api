@@ -20,5 +20,11 @@ Simple CRUD blogging app built using golang and grpc
 2. You can retrieve a blog post using the following command:
 
 ```
-grpcurl -plaintext -format text -d 'postid: 3134116674335633566' localhost:50051 bloggingapi.bloggingapi.ReadBlog
+grpcurl -plaintext -format text -d 'postid: <postID>' localhost:50051 bloggingapi.bloggingapi.ReadBlog
+```
+
+3. You can delete a blog post using the following command:
+
+```
+grpcurl -plaintext -format text -d 'postid: <postID' localhost:50051 bloggingapi.bloggingapi.DeleteBlog
 ```
