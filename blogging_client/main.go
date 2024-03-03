@@ -14,8 +14,8 @@ import (
 
 var (
 	addr        = flag.String("addr", "localhost:50051", "the address to connect to")
-	sampleblog  = bloggingapi.BlogPost{Title: "sample title", Content: "sample content"}
-	updatedblog = bloggingapi.BlogPost{Title: "updated sample title", Content: "updated sample content"}
+	sampleBlog  = bloggingapi.BlogPost{Title: "sample title", Content: "sample content"}
+	updatedBlog = bloggingapi.BlogPost{Title: "updated sample title", Content: "updated sample content"}
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 	defer cancel()
 
 	// Creating a blog post
-	blogPostWithUid, err := c.CreateBlog(ctx, &sampleblog)
+	blogPostWithUid, err := c.CreateBlog(ctx, &sampleBlog)
 	if err != nil {
 		log.Fatalf("could not create blog: %v", err)
 	}
@@ -48,11 +48,12 @@ func main() {
 	log.Printf("Retrieving post: %v", blogPost)
 
 	// Updating a blog post
-	// blogPostWithUid, err := c.UpdateBlog(ctx, &sampleblog)
-	// if err != nil {
-	// 	log.Fatalf("could not update blog: %v", err)
-	// }
-	// log.Printf("Blog post created: %v", blogPostWithUid)
+	var updatedBlogWithUid = bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: &updatedBlog}
+	updatedBlogPostWithUid, err := c.UpdateBlog(ctx, &updatedBlogWithUid)
+	if err != nil {
+		log.Fatalf("could not update blog: %v", err)
+	}
+	log.Printf("Blog post updated: %v", updatedBlogPostWithUid)
 
 	// Deleting a blog post
 	response, err := c.DeleteBlog(ctx, &bloggingapi.BlogPostID{PostID: blogPostId})

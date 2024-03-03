@@ -42,13 +42,13 @@ func (s *server) ReadBlog(ctx context.Context, in *bloggingapi.BlogPostID) (*blo
 	return &bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: blogPost}, nil
 }
 
-func (s *server) UpdateBlog(ctx context.Context, in *bloggingapi.BlogPostWithUid) (*bloggingapi.BlogPostWithUid, error) {
-	blogPostId := in.GetPostID()
+func (s *server) UpdateBlog(ctx context.Context, blogPostWithUid *bloggingapi.BlogPostWithUid) (*bloggingapi.BlogPostWithUid, error) {
+	blogPostId := blogPostWithUid.GetPostID()
 	_, exists := globalStore[blogPostId]
 
 	if exists {
 		log.Printf("Updating Blog post: %v", blogPostId)
-		globalStore[blogPostId] = in.GetPost()
+		globalStore[blogPostId] = blogPostWithUid.GetPost()
 		return &bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: globalStore[blogPostId]}, nil
 	}
 
