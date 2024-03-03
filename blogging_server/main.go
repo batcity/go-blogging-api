@@ -29,14 +29,13 @@ type server struct {
 
 func (s *server) CreateBlog(ctx context.Context, blogPost *bloggingapi.BlogPost) (*bloggingapi.BlogPostWithUid, error) {
 	// change this to base long and set it to autoincrement
-	blogPostId := rand.Uint64()
+	blogPostId := rand.Uint32()
 	///////////////////////////////////////////////////////
 	log.Printf("Created Blog post: %v", blogPostId)
 	globalStore[blogPostId] = blogPost
 	return &bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: blogPost}, nil
 }
 
-// modify this to pass in uint32 instead of a BlogPostID
 func (s *server) ReadBlog(ctx context.Context, in *bloggingapi.BlogPostID) (*bloggingapi.BlogPostWithUid, error) {
 	blogPostId := in.GetPostid()
 	log.Printf("Reading Blog post: %v", blogPostId)

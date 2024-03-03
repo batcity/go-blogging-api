@@ -2,7 +2,16 @@
 
 Simple CRUD blogging app built using golang and grpc
 
+## How to spin up the blogging server:
+
+Run the following command:
+
+```
+go run blogging_server/main.go
+```
+
 ## How to test the app:
+### (Note: Make sure to install grpcurl first)
 
 1. You can create a blog post using the following command
 

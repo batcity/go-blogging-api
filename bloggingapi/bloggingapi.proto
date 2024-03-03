@@ -31,5 +31,5 @@ message BlogPost {
 
 // The message containing the requested blog's ID
 message BlogPostID {
-  uint64 postid = 1;
+  uint32 postid = 1;
 }
