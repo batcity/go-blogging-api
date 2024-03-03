@@ -33,7 +33,7 @@ type BloggingapiClient interface {
 	CreateBlog(ctx context.Context, in *BlogPost, opts ...grpc.CallOption) (*BlogPostWithUid, error)
 	ReadBlog(ctx context.Context, in *BlogRequest, opts ...grpc.CallOption) (*BlogPostWithUid, error)
 	UpdateBlog(ctx context.Context, in *BlogPostWithUid, opts ...grpc.CallOption) (*BlogPost, error)
-	DeleteBlog(ctx context.Context, in *BlogRequest, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	DeleteBlog(ctx context.Context, in *BlogRequest, opts ...grpc.CallOption) (*wrapperspb.StringValue, error)
 }
 
 type bloggingapiClient struct {
@@ -71,8 +71,8 @@ func (c *bloggingapiClient) UpdateBlog(ctx context.Context, in *BlogPostWithUid,
 	return out, nil
 }
 
-func (c *bloggingapiClient) DeleteBlog(ctx context.Context, in *BlogRequest, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *bloggingapiClient) DeleteBlog(ctx context.Context, in *BlogRequest, opts ...grpc.CallOption) (*wrapperspb.StringValue, error) {
+	out := new(wrapperspb.StringValue)
 	err := c.cc.Invoke(ctx, Bloggingapi_DeleteBlog_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ type BloggingapiServer interface {
 	CreateBlog(context.Context, *BlogPost) (*BlogPostWithUid, error)
 	ReadBlog(context.Context, *BlogRequest) (*BlogPostWithUid, error)
 	UpdateBlog(context.Context, *BlogPostWithUid) (*BlogPost, error)
-	DeleteBlog(context.Context, *BlogRequest) (*wrapperspb.BoolValue, error)
+	DeleteBlog(context.Context, *BlogRequest) (*wrapperspb.StringValue, error)
 	mustEmbedUnimplementedBloggingapiServer()
 }
 
@@ -104,7 +104,7 @@ func (UnimplementedBloggingapiServer) ReadBlog(context.Context, *BlogRequest) (*
 func (UnimplementedBloggingapiServer) UpdateBlog(context.Context, *BlogPostWithUid) (*BlogPost, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBlog not implemented")
 }
-func (UnimplementedBloggingapiServer) DeleteBlog(context.Context, *BlogRequest) (*wrapperspb.BoolValue, error) {
+func (UnimplementedBloggingapiServer) DeleteBlog(context.Context, *BlogRequest) (*wrapperspb.StringValue, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBlog not implemented")
 }
 func (UnimplementedBloggingapiServer) mustEmbedUnimplementedBloggingapiServer() {}

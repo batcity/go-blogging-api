@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto"; // Imports Timestamp
-import "google/protobuf/wrappers.proto"; // Imports BoolValue
+import "google/protobuf/wrappers.proto"; // Imports StringValue
 import "google/protobuf/struct.proto"; // Imports ListValue
 option go_package = "go.blogging.api/bloggingapi";
 
@@ -12,7 +12,7 @@ service bloggingapi {
   rpc CreateBlog (BlogPost) returns (BlogPostWithUid){}
   rpc ReadBlog (BlogRequest) returns (BlogPostWithUid) {}
   rpc UpdateBlog(BlogPostWithUid) returns (BlogPost);
-	rpc DeleteBlog(BlogRequest) returns (google.protobuf.BoolValue);
+	rpc DeleteBlog(BlogRequest) returns (google.protobuf.StringValue);
 }
 
 message BlogPostWithUid {
@@ -20,7 +20,7 @@ message BlogPostWithUid {
   BlogPost post = 2;
 }
 
-// The request message containing the blog's details.
+// The message containing the blog's details.
 message BlogPost {
   string title = 2;
   string content = 3;
@@ -29,7 +29,7 @@ message BlogPost {
   google.protobuf.ListValue tags = 6;
 }
 
-// The response message containing the greetings
+// The message containing the requested blog's ID
 message BlogRequest {
   uint64 postid = 1;
 }
