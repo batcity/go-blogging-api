@@ -12,11 +12,11 @@ service bloggingapi {
   rpc CreateBlog (BlogPost) returns (BlogPostWithUid){}
   rpc ReadBlog (BlogPostID) returns (BlogPostWithUid) {}
   rpc UpdateBlog(BlogPostWithUid) returns (BlogPostWithUid);
-	rpc DeleteBlog(BlogPostID) returns (google.protobuf.StringValue);
+  rpc DeleteBlog(BlogPostID) returns (google.protobuf.StringValue);
 }
 
 message BlogPostWithUid {
-  uint64 postID = 1;
+  uint32 postID = 1;
   BlogPost post = 2;
 }
 
