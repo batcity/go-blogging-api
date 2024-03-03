@@ -14,12 +14,12 @@ import (
 	bloggingapi "go.blogging.api/bloggingapi"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"math/rand"
 )
 
 var (
-	port        = flag.Int("port", 50051, "The server port")
-	globalStore = make(map[uint32]*bloggingapi.BlogPost)
+	port                     = flag.Int("port", 50051, "The server port")
+	globalStore              = make(map[uint32]*bloggingapi.BlogPost)
+	globallyUniqueUid uint32 = 0
 )
 
 // server is used to implement Blogging API server.
@@ -28,16 +28,15 @@ type server struct {
 }
 
 func (s *server) CreateBlog(ctx context.Context, blogPost *bloggingapi.BlogPost) (*bloggingapi.BlogPostWithUid, error) {
-	// change this to base long and set it to autoincrement
-	blogPostId := rand.Uint32()
-	///////////////////////////////////////////////////////
+	blogPostId := globallyUniqueUid
 	log.Printf("Created Blog post: %v", blogPostId)
 	globalStore[blogPostId] = blogPost
+	globallyUniqueUid++
 	return &bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: blogPost}, nil
 }
 
 func (s *server) ReadBlog(ctx context.Context, in *bloggingapi.BlogPostID) (*bloggingapi.BlogPostWithUid, error) {
-	blogPostId := in.GetPostid()
+	blogPostId := in.GetPostID()
 	log.Printf("Reading Blog post: %v", blogPostId)
 	blogPost := globalStore[blogPostId]
 	return &bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: blogPost}, nil
@@ -57,7 +56,7 @@ func (s *server) UpdateBlog(ctx context.Context, in *bloggingapi.BlogPostWithUid
 }
 
 func (s *server) DeleteBlog(ctx context.Context, in *bloggingapi.BlogPostID) (*wrappers.StringValue, error) {
-	blogPostId := in.GetPostid()
+	blogPostId := in.GetPostID()
 	_, exists := globalStore[blogPostId]
 
 	if exists {

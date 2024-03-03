@@ -13,8 +13,9 @@ import (
 )
 
 var (
-	addr       = flag.String("addr", "localhost:50051", "the address to connect to")
-	sampleblog = bloggingapi.BlogPost{Title: "sample title", Content: "sample content"}
+	addr        = flag.String("addr", "localhost:50051", "the address to connect to")
+	sampleblog  = bloggingapi.BlogPost{Title: "sample title", Content: "sample content"}
+	updatedblog = bloggingapi.BlogPost{Title: "updated sample title", Content: "updated sample content"}
 )
 
 func main() {
@@ -30,6 +31,8 @@ func main() {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
+	// Creating a blog post
 	blogPostWithUid, err := c.CreateBlog(ctx, &sampleblog)
 	if err != nil {
 		log.Fatalf("could not create blog: %v", err)
@@ -38,7 +41,7 @@ func main() {
 	var blogPostId = blogPostWithUid.GetPostID()
 
 	// Reading a blog post
-	blogPost, err := c.ReadBlog(ctx, &bloggingapi.BlogPostID{Postid: blogPostId})
+	blogPost, err := c.ReadBlog(ctx, &bloggingapi.BlogPostID{PostID: blogPostId})
 	if err != nil {
 		log.Fatalf("could not read blog: %v", err)
 	}
@@ -52,7 +55,7 @@ func main() {
 	// log.Printf("Blog post created: %v", blogPostWithUid)
 
 	// Deleting a blog post
-	response, err := c.DeleteBlog(ctx, &bloggingapi.BlogPostID{Postid: blogPostId})
+	response, err := c.DeleteBlog(ctx, &bloggingapi.BlogPostID{PostID: blogPostId})
 	if err != nil {
 		log.Fatalf("%v", err)
 	}

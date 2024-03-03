@@ -29,7 +29,7 @@ go run blogging_server/main.go
 2. You can retrieve a blog post using the following command:
 
 ```
-grpcurl -plaintext -format text -d 'postid: <postID>' localhost:50051 bloggingapi.bloggingapi.ReadBlog
+grpcurl -plaintext -format text -d 'postID: <postID>' localhost:50051 bloggingapi.bloggingapi.ReadBlog
 ```
 
 3. You can Update a blog post using the following command:
@@ -50,5 +50,5 @@ grpcurl -plaintext -d '{
 4. You can delete a blog post using the following command:
 
 ```
-grpcurl -plaintext -format text -d 'postid: <postID>' localhost:50051 bloggingapi.bloggingapi.DeleteBlog
+grpcurl -plaintext -format text -d 'postID: <postID>' localhost:50051 bloggingapi.bloggingapi.DeleteBlog
 ```
