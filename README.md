@@ -26,5 +26,5 @@ grpcurl -plaintext -format text -d 'postid: <postID>' localhost:50051 bloggingap
 3. You can delete a blog post using the following command:
 
 ```
-grpcurl -plaintext -format text -d 'postid: <postID' localhost:50051 bloggingapi.bloggingapi.DeleteBlog
+grpcurl -plaintext -format text -d 'postid: <postID>' localhost:50051 bloggingapi.bloggingapi.DeleteBlog
 ```
