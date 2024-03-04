@@ -38,8 +38,14 @@ func (s *server) CreateBlog(ctx context.Context, blogPost *bloggingapi.BlogPost)
 func (s *server) ReadBlog(ctx context.Context, in *bloggingapi.BlogPostID) (*bloggingapi.BlogPostWithUid, error) {
 	blogPostId := in.GetPostID()
 	log.Printf("Reading Blog post: %v", blogPostId)
-	blogPost := globalStore[blogPostId]
-	return &bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: blogPost}, nil
+	blogPost, exists := globalStore[blogPostId]
+
+	if exists {
+		log.Printf("Retrieving Blog post: %v", blogPostId)
+		return &bloggingapi.BlogPostWithUid{PostID: blogPostId, Post: blogPost}, nil
+	}
+
+	return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s %d %s", "Blog post", blogPostId, "does not exist"))
 }
 
 func (s *server) UpdateBlog(ctx context.Context, blogPostWithUid *bloggingapi.BlogPostWithUid) (*bloggingapi.BlogPostWithUid, error) {

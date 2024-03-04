@@ -77,6 +77,19 @@ func TestReadBlog(t *testing.T) {
 	}
 }
 
+func TestReadBlogErrorPath(t *testing.T) {
+
+	client := newTestClient(t)
+	_, err := client.ReadBlog(ctx, &bloggingapi.BlogPostID{PostID: 100})
+
+	log.Printf("Response: %+v", err)
+	got := err.Error()
+	want := "rpc error: code = NotFound desc = Blog post 100 does not exist"
+	if got != want {
+		t.Errorf("got %s, wanted %s", got, want)
+	}
+}
+
 func TestUpdateBlog(t *testing.T) {
 
 	client := newTestClient(t)
