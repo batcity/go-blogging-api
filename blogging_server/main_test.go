@@ -96,6 +96,21 @@ func TestUpdateBlog(t *testing.T) {
 	}
 }
 
+func TestUpdateBlogErrorPath(t *testing.T) {
+
+	client := newTestClient(t)
+	updatedBlog := bloggingapi.BlogPost{Title: "updated sample title", Content: "updated sample content"}
+	updatedBlogWithUid := bloggingapi.BlogPostWithUid{PostID: 100, Post: &updatedBlog}
+	_, err := client.UpdateBlog(ctx, &updatedBlogWithUid)
+
+	log.Printf("Response: %+v", err)
+	got := err.Error()
+	want := "rpc error: code = NotFound desc = Blog post 100 does not exist"
+	if got != want {
+		t.Errorf("got %s, wanted %s", got, want)
+	}
+}
+
 func TestDeleteBlog(t *testing.T) {
 
 	client := newTestClient(t)
@@ -108,6 +123,19 @@ func TestDeleteBlog(t *testing.T) {
 
 	want := &wrappers.StringValue{Value: "Blog post 0 deleted successfully"}
 	if got.String() != want.String() {
+		t.Errorf("got %s, wanted %s", got, want)
+	}
+}
+
+func TestDeleteBlogErrorPath(t *testing.T) {
+
+	client := newTestClient(t)
+	_, err := client.DeleteBlog(ctx, &bloggingapi.BlogPostID{PostID: 100})
+
+	log.Printf("Response: %+v", err)
+	got := err.Error()
+	want := "rpc error: code = NotFound desc = Blog post 100 does not exist"
+	if got != want {
 		t.Errorf("got %s, wanted %s", got, want)
 	}
 }
