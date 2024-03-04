@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-  "github.com/golang/protobuf/ptypes/wrappers"
+	"github.com/golang/protobuf/ptypes/wrappers"
 	bloggingapi "go.blogging.api/bloggingapi"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
@@ -106,7 +106,7 @@ func TestDeleteBlog(t *testing.T) {
 	}
 	log.Printf("Response: %+v", got)
 
-  want := &wrappers.StringValue{Value: "Blog post 0 deleted successfully"}
+	want := &wrappers.StringValue{Value: "Blog post 0 deleted successfully"}
 	if got.String() != want.String() {
 		t.Errorf("got %s, wanted %s", got, want)
 	}
