@@ -52,3 +52,11 @@ grpcurl -plaintext -d '{
 ```
 grpcurl -plaintext -format text -d 'postID: <postID>' localhost:50051 bloggingapi.bloggingapi.DeleteBlog
 ```
+
+# How do I run unit tests:
+
+Run the following command:
+
+```
+go test -v ./...
+```
