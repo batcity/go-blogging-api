@@ -1,4 +1,4 @@
-// Package main implements a client for Blogging API service.
+// Package main implements a client for Blogging service.
 package main
 
 import (

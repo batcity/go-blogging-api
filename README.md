@@ -1,6 +1,6 @@
 # go-blogging-api
 
-Simple CRUD blogging app built using golang and grpc
+Simple CRUD blogging API built using golang and gRPC
 
 ## How to spin up the blogging server:
 
@@ -32,7 +32,7 @@ go run blogging_server/main.go
 grpcurl -plaintext -format text -d 'postID: <postID>' localhost:50051 bloggingapi.bloggingapi.ReadBlog
 ```
 
-3. You can Update a blog post using the following command:
+3. You can update a blog post using the following command:
 
 ```
 grpcurl -plaintext -d '{

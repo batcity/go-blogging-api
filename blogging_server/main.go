@@ -1,4 +1,4 @@
-// Package main implements a server for Bloggig service.
+// Package main implements a server for Blogging service.
 package main
 
 import (
